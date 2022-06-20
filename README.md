@@ -24,3 +24,22 @@
 + @RequestMapping 은 URL 경로를 템플릿화 할 수 있는데, @PathVariable 을 사용하면 매칭 되는 부분을 편리하게 조회할 수 있다.
 + consume = 요청헤더의 content Type 
 + produce = 요청헤더의 accept 
+>MultiValueMap
+ + MAP과 유사한데, 하나의 키에 여러 값을 받을 수 있다.
+ + HTTP header, HTTP 쿼리 파라미터와 같이 하나의 키에 여러 값을 받을 때 사용한다. 
+ + keyA=value1&keyA=value2
+> POST, HTML Form 전송
+  + 요청파라미터 조회 (request parameter) 
+  + Get 쿼리 파라미터 전송방식이든, POST HTML Form 전송 방식이든 둘다 형식이 같으므로 구분없이 조회 가능
+> requestParamV1
+  + HttpServletRequest 가 제공하는 방식으로 요청 파라미터 조회
+> requestParamV2
+  + @RequestParam
+  + 파라미터 이름으로 바인딩
+  + @ResponseBody 추가 ( View조회를 무시하고, HTTP message body에 직접 해당 내용입력)
+  + @RequestParam("username") String memberName
+  + request.getParameter("username"
+> requestParamV3
+  + HTTP 파라미터 이름이 변수 이름과 같으면 @RequestParam(name="xx") 생략 가능
+> requestParamV4
+  + String , int , Integer 등의 단순 타입이면 @RequestParam 도 생략 가능
