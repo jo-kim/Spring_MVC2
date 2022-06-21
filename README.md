@@ -43,3 +43,24 @@
   + HTTP 파라미터 이름이 변수 이름과 같으면 @RequestParam(name="xx") 생략 가능
 > requestParamV4
   + String , int , Integer 등의 단순 타입이면 @RequestParam 도 생략 가능
+> requestParamRequired
+  + 파라미터 필수 여부
+  + 기본값이 @RequestParam(required = true) 
+> requestParamMap
+  + 파라미터를 Map으로 조회
+  + @RequestParam Map , Map(key=value)
+> @ModelAttribute
+  ```
+   @ResponseBody
+   @RequestMapping("/model-attribute-v1")
+   public String modelAttributeV1(@ModelAttribute HelloData helloData) {
+   log.info("username={}, age={}", helloData.getUsername(),
+   helloData.getAge());
+   return "ok";
+   }
+   ```
+ + HelloData가 객체를 생성
+ + 요청 파라미터의 이름으로 HelloData객체의 프로퍼티를 찾는다.
+ + 해당 프로퍼티의 setter를 호출해서 파라미터의 값을 입력(바인딩) 한다
+    + 예) 파라미터 이름이 username 이면 setUsername() 메서드를 찾아서 호출하면서 값을 입력.
+    + 프로퍼티: 객체에 getUsername(), setUsername() 메서드 있으면 이객체는 username이라는 프로퍼티를 가지고 있음.
