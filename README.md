@@ -73,3 +73,39 @@
 #### HTTP 메시지 바디를 직접 조회하는 기능: @RequestBody
 + @ResponseBody
   >+ 응답결과를 Http에 직접 담아서 전달, view를 사용하지 않는다.
++ RequestBodyJsonV1
+  >+ HttpServletRequest를 사용해서 직접 HTTP 메시지 바디에서 데이터를 읽어와서, 문자로 변환.
+  >+ 문자로 된 JSON 데이터를 Jackson 라이브러리인 objectMapper 를 사용해서 자바 객체로 변환
++ RequestBodyJsonV2
+  >+ @RequestBody 를 사용해서 HTTP 메시지에서 데이터를 꺼내고 messageBody에 저장.
+  >+ 문자로 된 JSON 데이터인 messageBody 를 objectMapper 를 통해서 자바 객체로 변환
++ RequestBodyJsonV3
+  >+ @RequestBody HelloData data
+  >+ @RequestBody 에 직접 만든 객체를 지정할 수 있다
+  >+ HttpEntity , @RequestBody 를 사용하면 HTTP 메시지 컨버터가 HTTP 메시지 바디의 내용을 우리가 원하는 문자나 객체 등으로 변환
+  >+ @RequestBody는 생략 불가능 (HelloData에 @RequestBody 를 생략하면 @ModelAttribute 가 적용되어버린다.
+HelloData data @ModelAttribute HelloData data
+따라서 생략하면 HTTP 메시지 바디가 아니라 요청 파라미터를 처리하게 된다)
++ RequestBodyJsonV4
+  >+ HttpEntity사용
++ RequestBodyJsonV5
+  >+ @RequestBody 요청
+    >+ JSON요청 -> HTTP 메시지 컨버터 - > 객체
+  >+ @ResponseBody 응답
+    >+ 객체 - > HTTP 메시지 컨버터 -> JSON 응답
+-----------
++ responseBodyV1
+  >+ 서블릿을 직접 다룰 때 처럼 HttpServletResponse 객체를 통해서 HTTP 메시지 바디에 직접 ok 응답 메시지를 전달.
++ responseBodyV2
+  >+ ResponseEntity는 HttpEntity 를 상속 받았는데, HttpEntity는 HTTP 메시지의 헤더, 바디 정보를 가지고 있음.
+  >+ ResponseEntity는 HttpStatus.CREATED 와 같이 HTTP 응답코드를 설정 할 수 있다.
++ responseBodyV3
+  >+ @ResponseBody 를 사용하면 view를 사용하지 않고, HTTP 메시지 컨버터를 통해서 HTTP 메시지를 직접 입력할 수 있다.
++ responseBodyJsonV1
+  >+ ResponseEntity 를 반환한다. HTTP 메시지 컨버터를 통해서 JSON 형식으로 변환되어서 반환
++ responseBodyJsonV2
+  >+ @ResponseStatus(HttpStatus.OK) 애노테이션을 사용하여 응답코드 설정 가능.
++ @RestController
+  >+ @Controller 대신에 @RestController 애노테이션을 사용하면, 해당 컨트롤러에 모두@ResponseBody 가 적용되는 효과가 있다. 
+  >+ 따라서 뷰 템플릿을 사용하는 것이 아니라, HTTP 메시지 바디에 직접 데이터를 입력한다. 
+  >+ 이름 그대로 Rest API(HTTP API)를 만들 때 사용하는 컨트롤러
