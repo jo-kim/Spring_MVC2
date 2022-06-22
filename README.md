@@ -109,3 +109,19 @@ HelloData data @ModelAttribute HelloData data
   >+ @Controller 대신에 @RestController 애노테이션을 사용하면, 해당 컨트롤러에 모두@ResponseBody 가 적용되는 효과가 있다. 
   >+ 따라서 뷰 템플릿을 사용하는 것이 아니라, HTTP 메시지 바디에 직접 데이터를 입력한다. 
   >+ 이름 그대로 Rest API(HTTP API)를 만들 때 사용하는 컨트롤러
+#### HTTP 메시지 컨버터
+>+ @ResponseBody 를 사용 -> HTTP의 BODY에 문자 내용을 직접 반환 , viewResolver 대신에 HttpMessageConverter 가 동작
++ HTTP 메시지 컨버터 적용 케이스
+  + HTTP 요청 : @RequestBody, HttpEntity(RequestEntity)
+  + HTTP 응답 : @ResponseBody, HttpEntity(ResponseEntity)
+  >+ canRead(), canWrite() 로 해당클래스, 미디어타입을 지원하는지 체크
+  >+ read(), write() 로 메시지를 읽고 씀
+  >+ Byte~ , String~, MappingJackson~ 컨버터를 제공하는데 대상 클래스타입과 미디어 타입을 체크 후 사용여부 결정
++ HTTP 요청 데이터 읽기
+  >+ 요청이오면, 컨트롤러에서 @RequestBody, HttpEntity 파라미터 사용
+  >+ 컨버터가 메시지 읽을 수 있는지 여부 확인 위해 canRead() 호출
+  >+ 클래스 타입과 미디어타입 확인 후 조건 만족 시 read()를 호출해서 객체를 생성하고 반환한다.
++ HTTP 응답 데이터 생성
+  >+ 컨트롤러에서 @ResponseBody, HttpEntity 로 값이 반환
+  >+ 컨버터가 메시지를 쓸 수 있는지 확인 위해 canWrite() 호출
+  >+ 클래스 타입과 미디어타입 확인 후 조건 만족 시 write() 호출해서 HTTP 응답 메시지 바디에 데이터를 생성.
