@@ -125,3 +125,26 @@ HelloData data @ModelAttribute HelloData data
   >+ 컨트롤러에서 @ResponseBody, HttpEntity 로 값이 반환
   >+ 컨버터가 메시지를 쓸 수 있는지 확인 위해 canWrite() 호출
   >+ 클래스 타입과 미디어타입 확인 후 조건 만족 시 write() 호출해서 HTTP 응답 메시지 바디에 데이터를 생성.
+### RequestMappingHandler
+![image](https://user-images.githubusercontent.com/92084680/175439600-c093bdd5-44b3-4c18-aa69-9b68119eeda7.png)
+> ArgumentHandler [Request]
+  + 애노테이션 기반 컨트롤러를 처리하는 RequestMappingHandlerAdapter 는 
+  + ArgumentResolver 를 호출해서 컨트롤러(핸들러)가 필요로 하는 다양한 파라미터의 값(객체)을 생성한다.
+  + 파라미터의 값이 모두 준비되면 컨트롤러를 호출하며너 값을 넘겨준다.
+> 동작방식
+  + ArgumentResolver 의 supportsParameter() 를 호출해서 해당 파라미터를 지원하는지 체크
+  + 지원하면 resolveArgument() 를 호출해서 실제 객체를 생성.
+  + 이렇게 생성된 객체가 컨트롤러 호출시 넘어간다.
+ > ReturnValueHandler [Response]
+  + 응답값을 변환하고 처리하는 역할.
+    >+ 컨트롤러에서 String으로 뷰 이름을 반환해도, 동작하는 이유가 바로 ReturnValueHandler 덕분
+    
+
+ ![image](https://user-images.githubusercontent.com/92084680/175440097-7e727237-1979-467e-a1e7-bb67c0d1b716.png)
+   + 요청
+      + @RequestBody를 처리하는 ArgumentResolver가 있고, HttpEntity를 처리하는 ArgumentResolver가 있다.
+      + 이 ArgumentResolver들이 HTTP메시지 컨버터를 사용해서 필요한 객체를 생성.
+   + 응답
+      + @ResponseBody와 HttpEntity를 처리하는 ReturnValueHandler가 있다. 
+      + 이 ReturnValueHandler가 HTTP 메시지 컨버터를 호출해서 응답 결과를 만든다
+
